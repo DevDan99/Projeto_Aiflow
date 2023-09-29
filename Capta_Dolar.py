@@ -12,7 +12,7 @@ def Capta_dolar (): #faz requisição HTTP e obtem o JSON
     url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda='USD'&@dataInicial='01-01-2022'&@dataFinalCotacao='12-31-2090'&$top=10000&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao,tipoBoletim"
     response = requests.get(url)
     json= response.json()
-    return json
+    return json 
 
 def Transforma_CSV(ti): # Transforma o JSON em CSV
     json= ti.xcom_pull(task_ids='Capta_dolar')
@@ -25,9 +25,9 @@ def Upload_Minio(ti):
     
     config = {
         "dest_bucket": "processed",
-        "minio_endpoint": "http//<10.2.0.28>:9001",
+        "minio_endpoint": "127.0.0.1",
         "minio_user": "Airflow",
-        "minio_password": "dBCvoOhizLpyvFZFWXA7ceqIo4J7XJYRhyD9yPto"
+        "minio_password": "Airflow"
     } #configura a conexao com MinIO
     
     minio_client = Minio(
