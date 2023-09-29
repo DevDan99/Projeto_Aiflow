@@ -3,7 +3,6 @@ from datetime import datetime
 from airflow.operators.python import PythonOperator
 from minio import Minio
 import pandas as pd 
-import boto3
 import requests
 
 def Capta_euro():
@@ -21,20 +20,7 @@ def Transforma_csv(ti):
 
 def Upload_minio(ti):
     csv= ti.xcom_pull(task_ids= 'Transforma_csv'),
-    session= boto3.Session(
-        aws_access_key_id= 'AirFlw',
-        aws_secret_access_key= 'dBCvoOhizLpyvFZFWXA7ceqIo4J7XJYRhyD9yPto'
-    )
-
-    s3= session.resource('s3')
-    bucket_name= 'bucketesteversionado'
-    file_name= 'Capta_euro.csv'
-
-    s3.Bucket(bucket_name).put_object(
-        key= file_name,
-        body= csv,
-        ContentType= 'text/csv'
-    )
+    
 
 
 with DAG('Capta_euro', start_date=datetime(2023,9,1), schedule_interval='@daily', catchup=False) as dag:
