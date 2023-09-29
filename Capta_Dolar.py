@@ -2,8 +2,8 @@ from airflow import DAG
 from datetime import datetime
 from airflow.operators.python import PythonOperator
 from minio import Minio
-import pandas as pd 
-import json 
+import pandas as pd
+import io
 import requests #test
 
 
@@ -21,7 +21,7 @@ def Transforma_CSV(ti): # Transforma o JSON em CSV
     return CSV
 
 def Upload_Minio(ti):
-    CSV = ti.xcom_pull(task_ids= 'Transforma_CSV')
+    csv = ti.xcom_pull(task_ids= 'Transforma_CSV')
     
     config = {
         "dest_bucket": "processed",
@@ -39,13 +39,15 @@ def Upload_Minio(ti):
     
     bucket_name= 'bucketesteversionado'
     file_name= 'Cot_dolar.csv'
+    csv_bytes= csv.encode('utf-8') #converte str em bytes
 
     minio_client.put_object(
         bucket_name,
         file_name,
-        CSV.encode('utf-8'),
-        len(CSV)
+        io.BytesIO(csv_bytes), #passa o Byte em um objeto BytesIO
+        len(csv_bytes)
     ) # realiza o Upload para o Bucket no MinIo
+
 
 with DAG('Capta_Dolar',start_date= datetime(2023,9,27), schedule_interval='@daily', catchup= False) as dag:
 
