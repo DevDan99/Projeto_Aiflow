@@ -13,7 +13,7 @@ def Capta_euro():
     dados= json.leads(response.content) #abre a url
     chave= ['cotacapCompra','cotacaoVenda','dataHoraCotacao','tipoBoletim'] #seleciona paenas as chaves necessário da lista de dicionario do json
     dic= [{key:d_orig[key] for key in chave} for d_orig in dados['value']] #Cria um novo dicionario sendo a key a variavel 'Chave' e o valor do dicionario original.
-    df= pd.DataFrame(dic) #cria um data frame do dicionario novo
+    df= pd.DataFrame(dic) #cria um data frame do dicionario novo.
     return df
 
 def Transforma_csv(ti):
