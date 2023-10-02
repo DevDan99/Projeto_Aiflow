@@ -27,9 +27,9 @@ def Upload_Minio(ti):
     
     config = {
         "dest_bucket": "processed",
-        "minio_endpoint": "10.2.0.28:9000",
-        "minio_user": "AirFlw",
-        "minio_password": "dBCvoOhizLpyvFZFWXA7ceqIo4J7XJYRhyD9yPto"
+        "minio_endpoint": "127.0.1.1",
+        "minio_user": "admin",
+        "minio_password": "admin"
     } #configura a conexao com MinIO
     
     minio_client = Minio(
