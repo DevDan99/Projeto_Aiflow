@@ -13,7 +13,7 @@ import json
 def captura_conta_dados():
     url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda='USD'&@dataInicial='01-01-2022'&@dataFinalCotacao='12-31-2090'&$top=10000&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao,tipoBoletim"
     response = requests.get(url)
-    df= pd.DataFrame(json.load(response.content))
+    df = pd.DataFrame(json.loads(response.content))
     qtd = len(df.index)
     return qtd
 
@@ -22,7 +22,7 @@ def captura_conta_dados():
 # Xcom pega informações de outra task
 
 def e_valido(ti):
-    qtd = ti.xcom_pull(task_id = 'captura_conta_dados')
+    qtd = ti.xcom_pull(task_ids = 'captura_conta_dados')
     if (qtd > 100):
         return 'Valido'
     return 'Nvalido'
